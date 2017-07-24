@@ -202,10 +202,8 @@ class PornHubIE(InfoExtractor):
             r'page_params\.zoneDetails\[([\'"])[^\'"]+\1\]\s*=\s*(?P<data>{[^}]+})',
             webpage, 'page parameters', group='data', default='{}'),
             video_id, transform_source=js_to_json, fatal=False)
-        tags = categories = None
-        if page_params:
-            tags = page_params.get('tags', '').split(',')
-            categories = page_params.get('categories', '').split(',')
+        categories = re.findall(r"onclick=\"ga\('send', 'event', 'Watch Page', 'click', 'Category'\);\">([^<]+)<", webpage)
+        tags = re.findall(r'<a href="/video/search\?search=[^"]+">([^<]+)<', webpage)
 
         return {
             'id': video_id,
